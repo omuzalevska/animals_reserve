@@ -1,4 +1,4 @@
-package dev.muzalevska.reservanatural;
+package dev.muzalevska.reservanatural.entity;
 
 import java.time.LocalDate;
 
