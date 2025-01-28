@@ -1,30 +1,49 @@
 package dev.muzalevska.reservanatural.controllers;
 
+import dev.muzalevska.reservanatural.dto.TypeDTO;
 import dev.muzalevska.reservanatural.entity.Type;
 import dev.muzalevska.reservanatural.repository.TypeRepository;
+import dev.muzalevska.reservanatural.services.TypeService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/types")
 public class TypeController {
 
-    @Autowired
+    //@Autowired
+    private final TypeService typeService;
+   //@Autowired
     private TypeRepository typeRepository;
+
+    @Autowired
+    public TypeController(TypeService typeService, TypeRepository typeRepository) {
+        this.typeService = typeService;
+        this.typeRepository = typeRepository;
+    }
 
     // Отримати всі типи
     @GetMapping
-    public List<Type> getAllTypes() {
-        return typeRepository.findAll();
+    public List<TypeDTO> getAllTypes() {
+        List<Type> types = typeRepository.findAll();
+        return types.stream()
+                .map(type -> new TypeDTO(type))
+                //new TypeDTO(type.getId(), type.getName()))
+                .collect(Collectors.toList());
     }
-
+    
     // Додати новий тип
     @PostMapping
-    public Type createType(@RequestBody Type type) {
-        return typeRepository.save(type);
-    }
+     public ResponseEntity<TypeDTO> createType(@RequestBody TypeDTO typeDTO) {
+    TypeDTO savedTypeDTO = typeService.save(typeDTO);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedTypeDTO);
+     }
 
     // Отримати тип за ID
     @GetMapping("/{id}")

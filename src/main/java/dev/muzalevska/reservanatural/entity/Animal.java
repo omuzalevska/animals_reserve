@@ -4,16 +4,18 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "animals") // Назва таблиці
 public class Animal {
-    
-    //private static long idCounter = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,16 +23,20 @@ public class Animal {
 
     private String name;
 
-    @Column(name = "family_id")
-    private Long familyId;
+    @ManyToOne
+    @JoinColumn(name = "family_id", nullable = false)
+    private Family family; // Зв'язок з Family
 
-    @Column(name = "type_id")
-    private Long typeId;
+    @ManyToOne
+    @JoinColumn(name = "type_id", nullable = false)
+    private Type type; // Зв'язок з Type
 
+    @Enumerated(EnumType.STRING) 
     private Gender gender;
 
-    @Column(name = "country_id")
-    private Long countryId;
+    @ManyToOne
+    @JoinColumn(name = "country_id", nullable = false)
+    private Country country; // Зв'язок з Country
 
     @Column(name = "arrival_date")
     private LocalDate arrivalDate;
@@ -42,24 +48,16 @@ public class Animal {
     public Animal() {
     }
 
-    public Animal(Long id, String name, Long family_id, Long type_id, Gender gender, Long country_id, LocalDate arrivalDate, String photo_url) {
-        this.id = id;//generateId(); //idCounter++;
+    public Animal(Long id, String name, Family family, Type type, Gender gender, Country country, LocalDate arrivalDate, String photoUrl) {
+        this.id = id;
         this.name = name;
-        this.familyId = family_id;
-        this.typeId = type_id;
+        this.family = family;
+        this.type = type;
         this.gender = gender;
-        this.countryId = country_id;
+        this.country = country;
         this.arrivalDate = arrivalDate;
-        this.photoUrl = photo_url;
+        this.photoUrl = photoUrl;
     }
-
-    // private static synchronized long generateId() {
-    //     return ++idCounter;
-    // }
-
-    // public static void setIdCounter(Long idCounter) {
-    //     Animal.idCounter = idCounter;
-    // }
 
     public Long getId() {
         return id;
@@ -69,31 +67,49 @@ public class Animal {
         return name;
     }
 
-    public Long getFamilyId() {
-        return familyId;
+    public Family getFamily() {
+        return family;
     }
 
-    public Long getTypeId() {
-        return typeId;
+    public void setFamily(Family family) {
+        this.family = family;
     }
 
-    public Gender getGender() {
-        return gender;
+    public Type getType() {
+        return type;
     }
 
-    public Long getCountryId() {
-        return countryId;
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public LocalDate getArrivalDate() {
         return arrivalDate;
     }
 
+    public void setArrivalDate(LocalDate arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
     public String getPhotoUrl() {
         return photoUrl;
     }
 
-
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -103,29 +119,10 @@ public class Animal {
         this.name = name;
     }
 
-    public void setFamilyId(Long familyId) {
-        this.familyId = familyId;
+    public Gender getGender() {
+        return gender;
     }
 
-    public void setTypeId(Long typeId) {
-        this.typeId = typeId;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public void setCountryId(Long countryId) {
-        this.countryId = countryId;
-    }
-
-    public void setArrivalDate(LocalDate arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
+    
     
 }

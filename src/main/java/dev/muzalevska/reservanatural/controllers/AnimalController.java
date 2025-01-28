@@ -1,8 +1,11 @@
 package dev.muzalevska.reservanatural.controllers;
 
-import dev.muzalevska.reservanatural.entity.Animal;
-import dev.muzalevska.reservanatural.repository.AnimalRepository;
+import dev.muzalevska.reservanatural.dto.AnimalDTO;
+//import dev.muzalevska.reservanatural.entity.Animal;
+import dev.muzalevska.reservanatural.services.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,44 +14,45 @@ import java.util.List;
 @RequestMapping("/api/animals")
 public class AnimalController {
 
+    private final AnimalService animalService;
+
     @Autowired
-    private AnimalRepository animalRepository;
+    public AnimalController(AnimalService animalService) {
+        this.animalService = animalService;
+    }
 
     // Отримати всі тварини
     @GetMapping
-    public List<Animal> getAllAnimals() {
-        return animalRepository.findAll();
+    public ResponseEntity<List<AnimalDTO>> getAllAnimals() {
+        List<AnimalDTO> animals = animalService.getAllAnimals();
+        return ResponseEntity.ok(animals);
     }
 
     // Додати нову тварину
     @PostMapping
-    public Animal createAnimal(@RequestBody Animal animal) {
-        return animalRepository.save(animal);
+    public ResponseEntity<AnimalDTO> createAnimal(@RequestBody AnimalDTO animalDTO) {
+        AnimalDTO savedAnimal = animalService.save(animalDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAnimal);
     }
 
     // Отримати тварину за ID
     @GetMapping("/{id}")
-    public Animal getAnimalById(@PathVariable Long id) {
-        return animalRepository.findById(id).orElseThrow(() -> new RuntimeException("Animal not found"));
+    public ResponseEntity<AnimalDTO> getAnimalById(@PathVariable Long id) {
+        AnimalDTO animalDTO = animalService.getAnimalById(id);
+        return ResponseEntity.ok(animalDTO);
     }
 
     // Оновити тварину
     @PutMapping("/{id}")
-    public Animal updateAnimal(@PathVariable Long id, @RequestBody Animal updatedAnimal) {
-        Animal animal = animalRepository.findById(id).orElseThrow(() -> new RuntimeException("Animal not found"));
-        animal.setName(updatedAnimal.getName());
-        animal.setFamilyId(updatedAnimal.getFamilyId());
-        animal.setTypeId(updatedAnimal.getTypeId());
-        animal.setGender(updatedAnimal.getGender());
-        animal.setCountryId(updatedAnimal.getCountryId());
-        animal.setArrivalDate(updatedAnimal.getArrivalDate());
-        animal.setPhotoUrl(updatedAnimal.getPhotoUrl());
-        return animalRepository.save(animal);
+    public ResponseEntity<AnimalDTO> updateAnimal(@PathVariable Long id, @RequestBody AnimalDTO updatedAnimalDTO) {
+        AnimalDTO updatedAnimal = animalService.update(id, updatedAnimalDTO);
+        return ResponseEntity.ok(updatedAnimal);
     }
 
     // Видалити тварину
     @DeleteMapping("/{id}")
-    public void deleteAnimal(@PathVariable Long id) {
-        animalRepository.deleteById(id);
+    public ResponseEntity<Void> deleteAnimal(@PathVariable Long id) {
+        animalService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

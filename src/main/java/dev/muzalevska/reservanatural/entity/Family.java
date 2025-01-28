@@ -2,6 +2,10 @@ package dev.muzalevska.reservanatural.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,9 +15,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "family") 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Family {
-
-    // private static long idCounter = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +24,7 @@ public class Family {
     private String name;
 
      @OneToMany(mappedBy = "family") // Зв’язок "один до багатьох" з Type
+     @JsonManagedReference // Вказує, що це головний бік зв’язку
     private List<Type> types;
 
 

@@ -1,5 +1,8 @@
 package dev.muzalevska.reservanatural.entity;
 
+//import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,8 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "types") 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Type {
     
     @Id
@@ -20,6 +27,8 @@ public class Type {
 
     @ManyToOne // Налаштовуємо зв'язок "багато до одного" з Family
     @JoinColumn(name = "family_id", nullable = false) // Поле, яке відповідає зовнішньому ключу
+    @JsonIgnore
+    //@JsonBackReference // Вказує, що це зворотний бік зв’язку
     private Family family;
     
     public Type() {
@@ -43,6 +52,10 @@ public class Type {
         return family;
     }
 
+    public Family getFamily() { // для TypeDTO
+        return family;
+    }
+
     public void setFamilyId(Family familyId) {
         this.family = familyId;
     }
@@ -53,5 +66,9 @@ public class Type {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setFamily(Family family) { 
+        this.family = family;
     }
 }
