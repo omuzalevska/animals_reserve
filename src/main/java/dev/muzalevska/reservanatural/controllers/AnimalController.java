@@ -26,8 +26,6 @@ public class AnimalController {
         this.animalService = animalService;
     }
 
-
-
     // список всіх тварини
     @GetMapping
     public ResponseEntity<List<AnimalDTO>> getAllAnimals() {
