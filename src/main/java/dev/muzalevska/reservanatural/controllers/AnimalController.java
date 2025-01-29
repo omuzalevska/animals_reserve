@@ -3,14 +3,19 @@ package dev.muzalevska.reservanatural.controllers;
 import dev.muzalevska.reservanatural.dto.AnimalDTO;
 import dev.muzalevska.reservanatural.entity.Animal;
 import dev.muzalevska.reservanatural.repository.AnimalRepository;
-//import dev.muzalevska.reservanatural.entity.Animal;
 import dev.muzalevska.reservanatural.services.AnimalService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/animals")
@@ -45,6 +50,40 @@ public class AnimalController {
         return animalRepository.findByName(name);
     }
 
+    //всі тварини посторінково по 20 шт\стор
+    @GetMapping("/paged")
+    public Page<Animal> getAllAnimalsPaged(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return animalRepository.findAll(pageable);
+    }
+
+    // пошук по родині посторінково по 10 шт\стор
+    @GetMapping("/by-family")
+    public Page<Animal> getAnimalsByFamilyPaged(@RequestParam Long familyId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return animalRepository.findByFamilyId(familyId, pageable);
+    }
+
+    // пошук тварин за країною (countryId)
+    @GetMapping("/country/{countryId}")
+    public ResponseEntity<List<AnimalDTO>> getAnimalsByCountry(@PathVariable Long countryId) {
+        List<Animal> animals = animalRepository.findByCountryId(countryId);
+        List<AnimalDTO> animalDTOs = animals.stream().map(AnimalDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(animalDTOs);
+    }
+
+    // пошук тварин за родиною (familyId) та типом (typeId)
+    @GetMapping("/family/{familyId}/type/{typeId}")
+    public ResponseEntity<List<AnimalDTO>> getAnimalsByFamilyAndType(@PathVariable Long familyId, @PathVariable Long typeId) {
+        List<Animal> animals = animalRepository.findByFamilyIdAndTypeId(familyId, typeId);
+        List<AnimalDTO> animalDTOs = animals.stream().map(AnimalDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok(animalDTOs);
+    }
+
+    //CRUD
     // Додати
     @PostMapping
     public ResponseEntity<AnimalDTO> createAnimal(@RequestBody AnimalDTO animalDTO) {
