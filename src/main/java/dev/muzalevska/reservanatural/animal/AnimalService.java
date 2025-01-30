@@ -1,14 +1,12 @@
-package dev.muzalevska.reservanatural.services;
+package dev.muzalevska.reservanatural.animal;
 
-import dev.muzalevska.reservanatural.dto.AnimalDTO;
-import dev.muzalevska.reservanatural.entity.Animal;
-import dev.muzalevska.reservanatural.entity.Country;
-import dev.muzalevska.reservanatural.entity.Family;
-import dev.muzalevska.reservanatural.entity.Type;
-import dev.muzalevska.reservanatural.repository.AnimalRepository;
-import dev.muzalevska.reservanatural.repository.CountryRepository;
-import dev.muzalevska.reservanatural.repository.FamilyRepository;
-import dev.muzalevska.reservanatural.repository.TypeRepository;
+import dev.muzalevska.reservanatural.country.Country;
+import dev.muzalevska.reservanatural.country.CountryRepository;
+import dev.muzalevska.reservanatural.family.Family;
+import dev.muzalevska.reservanatural.family.FamilyRepository;
+import dev.muzalevska.reservanatural.type.Type;
+import dev.muzalevska.reservanatural.type.TypeRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,5 @@
-package dev.muzalevska.reservanatural.repository;
+package dev.muzalevska.reservanatural.animal;
 
-import dev.muzalevska.reservanatural.entity.Animal;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,4 @@
-package dev.muzalevska.reservanatural.dto;
-
-import dev.muzalevska.reservanatural.entity.Family;
+package dev.muzalevska.reservanatural.family;
 
 public class FamilyDTO {
     private Long id;

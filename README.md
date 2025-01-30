@@ -1,7 +1,7 @@
 # Wildlife Reserve Management API
 
 ## Project Description:
-This project involves the creation of an API for the management and maintenance of a wildlife reserve. The API allows administrators to manage information about the animals in the reserve, with authentication and authorization features. The system supports both Basic Auth.
+This project involves the creation of an API for the management and maintenance of a wildlife reserve. The API allows administrators to manage information about the animals in the reserve, with authentication and authorization features. The system supports Basic Auth.
 
 ### Public API Requests:
 Get a list of all animals in the reserve with pagination (maximum 20 animals).

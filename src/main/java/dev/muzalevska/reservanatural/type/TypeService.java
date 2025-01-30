@@ -1,14 +1,10 @@
-package dev.muzalevska.reservanatural.services;
+package dev.muzalevska.reservanatural.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dev.muzalevska.reservanatural.dto.TypeDTO;
-import dev.muzalevska.reservanatural.entity.Type;
-import dev.muzalevska.reservanatural.repository.TypeRepository;
-
-import dev.muzalevska.reservanatural.entity.Family;
-import dev.muzalevska.reservanatural.repository.FamilyRepository;
+import dev.muzalevska.reservanatural.family.Family;
+import dev.muzalevska.reservanatural.family.FamilyRepository;
 
 @Service
 public class TypeService {

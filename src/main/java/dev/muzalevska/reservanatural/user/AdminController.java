@@ -1,4 +1,4 @@
-package dev.muzalevska.reservanatural.controllers;
+package dev.muzalevska.reservanatural.user;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

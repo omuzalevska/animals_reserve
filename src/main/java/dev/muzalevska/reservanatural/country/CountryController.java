@@ -1,7 +1,5 @@
-package dev.muzalevska.reservanatural.controllers;
+package dev.muzalevska.reservanatural.country;
 
-import dev.muzalevska.reservanatural.entity.Country;
-import dev.muzalevska.reservanatural.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

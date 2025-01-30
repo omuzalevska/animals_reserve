@@ -1,6 +1,5 @@
-package dev.muzalevska.reservanatural.repository;
+package dev.muzalevska.reservanatural.country;
 
-import dev.muzalevska.reservanatural.entity.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

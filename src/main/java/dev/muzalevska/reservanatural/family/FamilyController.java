@@ -1,9 +1,4 @@
-package dev.muzalevska.reservanatural.controllers;
-
-import dev.muzalevska.reservanatural.dto.FamilyDTO;
-import dev.muzalevska.reservanatural.entity.Family;
-import dev.muzalevska.reservanatural.repository.FamilyRepository;
-import dev.muzalevska.reservanatural.services.FamilyService;
+package dev.muzalevska.reservanatural.family;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

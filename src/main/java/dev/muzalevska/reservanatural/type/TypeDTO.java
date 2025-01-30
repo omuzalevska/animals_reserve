@@ -1,6 +1,4 @@
-package dev.muzalevska.reservanatural.dto;
-
-import dev.muzalevska.reservanatural.entity.Type;
+package dev.muzalevska.reservanatural.type;
 
 public class TypeDTO {
     private Long id;

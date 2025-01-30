@@ -1,9 +1,4 @@
-package dev.muzalevska.reservanatural.controllers;
-
-import dev.muzalevska.reservanatural.dto.AnimalDTO;
-import dev.muzalevska.reservanatural.entity.Animal;
-import dev.muzalevska.reservanatural.repository.AnimalRepository;
-import dev.muzalevska.reservanatural.services.AnimalService;
+package dev.muzalevska.reservanatural.animal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

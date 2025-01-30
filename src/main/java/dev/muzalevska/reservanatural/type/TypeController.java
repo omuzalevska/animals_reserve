@@ -1,9 +1,4 @@
-package dev.muzalevska.reservanatural.controllers;
-
-import dev.muzalevska.reservanatural.dto.TypeDTO;
-import dev.muzalevska.reservanatural.entity.Type;
-import dev.muzalevska.reservanatural.repository.TypeRepository;
-import dev.muzalevska.reservanatural.services.TypeService;
+package dev.muzalevska.reservanatural.type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

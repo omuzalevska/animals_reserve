@@ -1,4 +1,4 @@
-package dev.muzalevska.reservanatural.entity;
+package dev.muzalevska.reservanatural.family;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import dev.muzalevska.reservanatural.type.Type;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

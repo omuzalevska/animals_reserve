@@ -1,4 +1,4 @@
-package dev.muzalevska.reservanatural.entity;
+package dev.muzalevska.reservanatural.type;
 
 //import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +13,8 @@ import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import dev.muzalevska.reservanatural.family.Family;
 
 @Entity
 @Table(name = "types") 

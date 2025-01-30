@@ -1,7 +1,11 @@
-package dev.muzalevska.reservanatural.entity;
+package dev.muzalevska.reservanatural.animal;
 
 import java.time.LocalDate;
 
+import dev.muzalevska.reservanatural.country.Country;
+import dev.muzalevska.reservanatural.family.Family;
+import dev.muzalevska.reservanatural.gender.Gender;
+import dev.muzalevska.reservanatural.type.Type;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

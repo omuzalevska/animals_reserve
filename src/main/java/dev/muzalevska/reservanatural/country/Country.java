@@ -1,4 +1,4 @@
-package dev.muzalevska.reservanatural.entity;
+package dev.muzalevska.reservanatural.country;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

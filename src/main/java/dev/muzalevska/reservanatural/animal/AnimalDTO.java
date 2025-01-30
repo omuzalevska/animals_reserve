@@ -1,9 +1,8 @@
-package dev.muzalevska.reservanatural.dto;
-
-import dev.muzalevska.reservanatural.entity.Animal;
-import dev.muzalevska.reservanatural.entity.Gender;
+package dev.muzalevska.reservanatural.animal;
 
 import java.time.LocalDate;
+
+import dev.muzalevska.reservanatural.gender.Gender;
 
 public class AnimalDTO {
     private Long id;

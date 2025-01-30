@@ -1,11 +1,7 @@
-package dev.muzalevska.reservanatural.services;
+package dev.muzalevska.reservanatural.family;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import dev.muzalevska.reservanatural.dto.FamilyDTO;
-import dev.muzalevska.reservanatural.entity.Family;
-import dev.muzalevska.reservanatural.repository.FamilyRepository;
 
 @Service 
 public class FamilyService {

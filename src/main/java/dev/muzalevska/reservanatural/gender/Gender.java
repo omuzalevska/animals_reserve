@@ -1,4 +1,4 @@
-package dev.muzalevska.reservanatural.entity;
+package dev.muzalevska.reservanatural.gender;
 
 public enum Gender {
     M, 
