@@ -52,15 +52,15 @@ DELETE http://localhost:8080/api/tupes/{id} To delete tupe
 #### animals
 
 #### Public API Requests:
-GET http://localhost:8080/api/animals/paged?page=0&size=20  
+GET http://localhost:8080/api/animals/paged?page=0&size=20
     To get a list of all animals in the reserve with pagination (maximum 20 animals). 
-GET http://localhost:8080/api/animals/family/1/paged?page=0&size=10  
+GET http://localhost:8080/api/animals/family/1/paged?page=0&size=10
     To get a list of animals by family with pagination (maximum 10 animals). 
-GET http://localhost:8080/api/animals/country/{id}  
-    To get a list of animals by country of origin without pagination. 
-GET http://localhost:8080/api/animals/family/1/type/3   
+GET http://localhost:8080/api/animals/country/{id}
+    To get a list of animals by country of origin without pagination.
+GET http://localhost:8080/api/animals/family/1/type/3
     To get a list of animals by family and type.
-
+    
 #### Private API Requests:
 GET http://localhost:8080/api/animals To get list with all animals
 GET http://localhost:8080/api/animals/{id} To get animal by ID
