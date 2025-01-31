@@ -112,10 +112,10 @@ To update animal data
 DELETE http://localhost:8080/api/animals/{id}  
 To delete animal  
 
-http://localhost:8080/api/animals/private/name/{name}
-To find animal by name    
+GET http://localhost:8080/api/animals/private/name/{name}  
+To find animal by name  
 
-http://localhost:8080/api/animals/private/count  
+GET http://localhost:8080/api/animals/private/count  
 To get the total number of animals  
 
 ## Author
