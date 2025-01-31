@@ -2,6 +2,7 @@ package dev.muzalevska.reservanatural.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 // import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -34,6 +35,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/animals/private/**").hasRole("ADMIN")
                 // Публічний доступ для всіх інших методів
                 .requestMatchers("/api/animals/public/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/animals/").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/animals/").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/animals/").hasRole("ADMIN")
                 .anyRequest().authenticated()) // Всі інші запити повинні бути аутентифіковані
             .httpBasic(withDefaults()) // Basic Auth (можна замінити на JWT)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
