@@ -22,9 +22,15 @@ public class FamilyController {
     public FamilyController(FamilyService familyService) {
         this.familyService = familyService;
     }
+
+    // @Autowired
+    // public FamilyController(FamilyService familyService, FamilyRepository familyRepository) {
+    //     this.familyService = familyService;
+    //     this.familyRepository = familyRepository;
+    // }
+    
     // Отримати всі сімейства
-    @GetMapping 
-    //("/api/families")
+    @GetMapping("/api/families")
     public List<FamilyDTO> getAllFamilies() {
     List<Family> families = familyRepository.findAll();
     return families.stream()

@@ -33,17 +33,9 @@ public class Family {
     }
 
     public Family(Long id, String name) {
-        this.id = id;//generateId(); //idCounter++;
+        this.id = id;
         this.name = name;
     }
-
-    // private static synchronized long generateId() {
-    //     return ++idCounter;
-    // }
-
-    // public static void setIdCounter(Long idCounter) {
-    //     Family.idCounter = idCounter;
-    // }
 
     public Long getId() {
         return id;
