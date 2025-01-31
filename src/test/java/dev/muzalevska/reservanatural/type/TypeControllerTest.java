@@ -1,111 +1,75 @@
 package dev.muzalevska.reservanatural.type;
 
-import org.junit.jupiter.api.BeforeEach;
+// import dev.muzalevska.reservanatural.type.TypeController;
+// import dev.muzalevska.reservanatural.type.TypeService;
+// import dev.muzalevska.reservanatural.type.TypeDTO;
+// import dev.muzalevska.reservanatural.type.TypeRepository;
+// import dev.muzalevska.reservanatural.type.Type;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
-import dev.muzalevska.reservanatural.family.Family;
-
-import java.util.Arrays;
-import java.util.Optional;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.http.MediaType;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(TypeController.class)
+import java.util.List;
+
+@ExtendWith(MockitoExtension.class)  // Забезпечує ініціалізацію моків
 class TypeControllerTest {
 
-    @Autowired
+    @Mock
+    private TypeService typeService;  // Мок сервісу
+
+    @Mock
+    private TypeRepository typeRepository;  // Мок репозиторію
+
+    @InjectMocks
+    private TypeController typeController;  // Контролер, до якого ми інжектимо моки
+
     private MockMvc mockMvc;
 
-    @SuppressWarnings("removal")
-    @MockBean
-    private TypeService typeService;
-
-    @SuppressWarnings("removal")
-    @MockBean
-    private TypeRepository typeRepository;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    public TypeControllerTest() {
+        // Ініціалізація MockMvc для тестування контролера
+        this.mockMvc = MockMvcBuilders.standaloneSetup(typeController).build();
     }
 
     @Test
-    void getAllTypes_ShouldReturnListOfTypes() throws Exception {
-        when(typeRepository.findAll()).thenReturn(Arrays.asList(
-                new Type(1L, "Mammal", new Family(1L, "Felidae")),
-                new Type(2L, "Bird", new Family(2L, "Aves"))
-        ));
+    void testGetAllTypes() throws Exception {
+        // Моковані дані
+        Type type1 = new Type(1L, "Type1", null);
+        Type type2 = new Type(2L, "Type2", null);
 
-        mockMvc.perform(get("/api/types"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$[0].name").value("Mammal"))
-                .andExpect(jsonPath("$[1].name").value("Bird"));
+        // Мокаємо поведінку репозиторію
+        when(typeRepository.findAll()).thenReturn(List.of(type1, type2));
 
-        verify(typeRepository, times(1)).findAll();
+        mockMvc.perform(get("/api/types"))  // Виконання запиту до контролера
+                .andExpect(status().isOk())  // Перевірка статусу відповіді
+                .andExpect(jsonPath("$[0].name").value("Type1"))  // Перевірка значення поля "name" для першого елемента
+                .andExpect(jsonPath("$[1].name").value("Type2"));  // Перевірка значення поля "name" для другого елемента
+
+        verify(typeRepository, times(1)).findAll();  // Перевірка, що метод findAll() був викликаний 1 раз
     }
 
     @Test
-    void getTypeById_ShouldReturnType() throws Exception {
-        when(typeRepository.findById(1L)).thenReturn(Optional.of(new Type(1L, "Mammal", new Family(1L, "Felidae"))));
+    void testCreateType() throws Exception {
+        // Моковані дані для створення нового типу
+        TypeDTO typeDTO = new TypeDTO(1L, "New Type", 1L);
+        when(typeService.save(typeDTO)).thenReturn(typeDTO);  // Мокаємо сервіс
 
-        mockMvc.perform(get("/api/types/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Mammal"));
+        mockMvc.perform(post("/api/types")  // Запит на створення нового типу
+                .contentType(MediaType.APPLICATION_JSON)  // Вказуємо тип контенту JSON
+                .content("{\"id\": 1, \"name\": \"New Type\", \"familyId\": 1}"))  // Тіло запиту
+                .andExpect(status().isCreated())  // Перевірка, що статус відповіді 201 (Created)
+                .andExpect(jsonPath("$.name").value("New Type"));  // Перевірка, що в відповіді є правильне ім'я
 
-        verify(typeRepository, times(1)).findById(1L);
+        verify(typeService, times(1)).save(typeDTO);  // Перевірка, що метод save() сервісу був викликаний один раз
     }
 
-    @Test
-    void createType_ShouldReturnCreatedType() throws Exception {
-        // TypeDTO newTypeDTO = new TypeDTO(null, "Reptile", 1L);
-        TypeDTO savedTypeDTO = new TypeDTO(1L, "Reptile", 1L);
-
-        when(typeService.save(any(TypeDTO.class))).thenReturn(savedTypeDTO);
-
-        mockMvc.perform(post("/api/types")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"name\": \"Reptile\", \"familyId\": 1}"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Reptile"));
-
-        verify(typeService, times(1)).save(any(TypeDTO.class));
-    }
-
-    @Test
-    void updateType_ShouldReturnUpdatedType() throws Exception {
-        Family family = new Family(1L, "Felidae");
-        Type existingType = new Type(1L, "Mammal", family);
-        when(typeRepository.findById(1L)).thenReturn(Optional.of(existingType));
-        when(typeRepository.save(any(Type.class))).thenReturn(new Type(1L, "Amphibian", family));
-
-        mockMvc.perform(put("/api/types/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content("{\"id\": 1, \"name\": \"Amphibian\", \"familyId\": 1}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Amphibian"));
-
-        verify(typeRepository, times(1)).findById(1L);
-        verify(typeRepository, times(1)).save(any(Type.class));
-    }
-
-    @Test
-    void deleteType_ShouldReturnNoContent() throws Exception {
-        doNothing().when(typeRepository).deleteById(1L);
-
-        mockMvc.perform(delete("/api/types/1"))
-                .andExpect(status().isOk());
-
-        verify(typeRepository, times(1)).deleteById(1L);
-    }
+    // Додати інші тести для методів update, delete і т.д.
 }

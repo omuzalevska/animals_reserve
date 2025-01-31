@@ -34,19 +34,19 @@ public class AnimalController {
     }
 
     //к-ть тварин
-    @GetMapping("/count")
+    @GetMapping("/private/count")
     public Long getAnimalCount() {
         return animalRepository.count();
     }
 
     // пошук по імені
-    @GetMapping("/name/{name}")
+    @GetMapping("/private/name/{name}")
     public List<Animal> getAnimalByName(@PathVariable String name) {
         return animalRepository.findByName(name);
     }
 
     //всі тварини посторінково по 20 шт\стор
-    @GetMapping("/paged")
+    @GetMapping("/public/paged")
     public Page<Animal> getAllAnimalsPaged(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -54,7 +54,7 @@ public class AnimalController {
     }
 
     // пошук по родині посторінково по 10 шт\стор
-    @GetMapping("/by-family")
+    @GetMapping("/public/by-family")
     public Page<Animal> getAnimalsByFamilyPaged(@RequestParam Long familyId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -63,7 +63,7 @@ public class AnimalController {
     }
 
     // пошук тварин за країною (countryId)
-    @GetMapping("/country/{countryId}")
+    @GetMapping("/public/country/{countryId}")
     public ResponseEntity<List<AnimalDTO>> getAnimalsByCountry(@PathVariable Long countryId) {
         List<Animal> animals = animalRepository.findByCountryId(countryId);
         List<AnimalDTO> animalDTOs = animals.stream().map(AnimalDTO::new).collect(Collectors.toList());
@@ -71,7 +71,7 @@ public class AnimalController {
     }
 
     // пошук тварин за родиною (familyId) та типом (typeId)
-    @GetMapping("/family/{familyId}/type/{typeId}")
+    @GetMapping("/public/family/{familyId}/type/{typeId}")
     public ResponseEntity<List<AnimalDTO>> getAnimalsByFamilyAndType(@PathVariable Long familyId, @PathVariable Long typeId) {
         List<Animal> animals = animalRepository.findByFamilyIdAndTypeId(familyId, typeId);
         List<AnimalDTO> animalDTOs = animals.stream().map(AnimalDTO::new).collect(Collectors.toList());

@@ -30,7 +30,8 @@ public class FamilyController {
     // }
     
     // Отримати всі сімейства
-    @GetMapping("/api/families")
+    @GetMapping
+    // ("/api/families")
     public List<FamilyDTO> getAllFamilies() {
     List<Family> families = familyRepository.findAll();
     return families.stream()

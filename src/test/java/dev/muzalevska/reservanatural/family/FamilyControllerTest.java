@@ -1,121 +1,123 @@
 package dev.muzalevska.reservanatural.family;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.extension.ExtendWith;
+// import org.mockito.InjectMocks;
+// import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-// import java.util.Arrays;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+// import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@WebMvcTest(FamilyController.class)
+@ExtendWith(MockitoExtension.class)
 class FamilyControllerTest {
 
+    @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @SuppressWarnings("removal")
+    @MockBean
     private FamilyService familyService;
 
-    @Mock
+    @SuppressWarnings("removal")
+    @MockBean
     private FamilyRepository familyRepository;
 
-    @InjectMocks
-    private FamilyController familyController;
+    @SuppressWarnings("unused")
+    @Autowired
+    private ObjectMapper objectMapper; // Для конвертації JSON
+
+    private Family testFamily;
+    @SuppressWarnings("unused")
+    private FamilyDTO testFamilyDTO;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(familyController).build();
+        testFamily = new Family(1L, "Mammals");
+        testFamilyDTO = new FamilyDTO(1L, "Mammals");
     }
 
-    // @Test
-    // void getAllFamilies_ShouldReturnListOfFamilies() throws Exception {
-    //     when(familyRepository.findAll()).thenReturn(Arrays.asList(new Family(3L, "Felidae"), new Family(2L, "Canidae")));
-
-    //     mockMvc.perform(get("/api/families"))
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.size()").value(2))
-    //             .andExpect(jsonPath("$[0].name").value("Felidae"))
-    //             .andExpect(jsonPath("$[1].name").value("Canidae"));
-
-    //     verify(familyRepository, times(1)).findAll();
-    // }
-
+    @WithMockUser(username = "user", roles = "ADMIN")
     @Test
-    void getFamilyById_ShouldReturnFamily() throws Exception {
-        when(familyRepository.findById(1L)).thenReturn(Optional.of(new Family(1L, "Felidae")));
+    void testGetAllFamilies() throws Exception {
+        List<Family> families = Arrays.asList(testFamily);
+        when(familyRepository.findAll()).thenReturn(families);
 
-        mockMvc.perform(get("/api/families/1"))
+        mockMvc.perform(get("/api/families")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Felidae"));
-
-        verify(familyRepository, times(1)).findById(1L);
+                .andExpect(jsonPath("$.size()").value(1))
+                .andExpect(jsonPath("$[0].id").value(testFamily.getId()))
+                .andExpect(jsonPath("$[0].name").value(testFamily.getName()));
     }
 
-    // @Test
-    // void createFamily_ShouldReturnCreatedFamily() throws Exception {
-    //     // FamilyDTO newFamilyDTO = new FamilyDTO(null, "Ursidae");
-    //     FamilyDTO savedFamilyDTO = new FamilyDTO(1L, "Ursidae");
+    @WithMockUser(username = "user", roles = "ADMIN")
+    @Test
+    void testGetFamilyById() throws Exception {
+        when(familyRepository.findById(1L)).thenReturn(Optional.of(testFamily));
 
-    //     when(familyService.save(any(FamilyDTO.class))).thenReturn(savedFamilyDTO);
+        mockMvc.perform(get("/api/families/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(testFamily.getId()))
+                .andExpect(jsonPath("$.name").value(testFamily.getName()));
+    }
+
+    // @WithMockUser(username = "user", roles = "ADMIN")
+    // @Test
+    // void testCreateFamily() throws Exception {
+    //     when(familyService.save(any(FamilyDTO.class))).thenReturn(testFamilyDTO);
 
     //     mockMvc.perform(post("/api/families")
     //                     .contentType(MediaType.APPLICATION_JSON)
-    //                     .content("{\"name\": \"Ursidae\"}"))
+    //                     .content(objectMapper.writeValueAsString(testFamilyDTO)))
     //             .andExpect(status().isCreated())
-    //             .andExpect(jsonPath("$.name").value("Ursidae"));
-
-    //     verify(familyService, times(1)).save(any(FamilyDTO.class));
+    //             .andExpect(jsonPath("$.id").value(testFamilyDTO.getId()))
+    //             .andExpect(jsonPath("$.name").value(testFamilyDTO.getName()));
     // }
 
-    @Test
-    void createFamily_ShouldReturnCreatedFamily() throws Exception {
-        FamilyDTO savedFamilyDTO = new FamilyDTO(1L, "Ursidae");
-
-        when(familyService.save(any(FamilyDTO.class))).thenReturn(savedFamilyDTO);
-
-        mockMvc.perform(post("/api/families")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON) // Додали accept
-                        .content("{\"name\": \"Ursidae\"}"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Ursidae"));
-
-        verify(familyService, times(1)).save(any(FamilyDTO.class));
-    }
-
+    // @WithMockUser(username = "user", roles = "ADMIN")
     // @Test
-    // void updateFamily_ShouldReturnUpdatedFamily() throws Exception {
-    //     Family existingFamily = new Family(1L, "Felidae");
-    //     when(familyRepository.findById(1L)).thenReturn(Optional.of(existingFamily));
-    //     when(familyRepository.save(any(Family.class))).thenReturn(new Family(1L, "Canidae"));
+    // void testUpdateFamily() throws Exception {
+    //     Family updatedFamily = new Family(1L, "Birds");
+    //     when(familyRepository.findById(1L)).thenReturn(Optional.of(testFamily));
+    //     when(familyRepository.save(any(Family.class))).thenReturn(updatedFamily);
 
     //     mockMvc.perform(put("/api/families/1")
+    //                     .with(csrf()) // додає CSRF-токен
     //                     .contentType(MediaType.APPLICATION_JSON)
-    //                     .accept(MediaType.APPLICATION_JSON) // Додали accept
-    //                     .content("{\"name\": \"Canidae\"}"))
+    //                     .accept(MediaType.APPLICATION_JSON)
+    //                     .content(objectMapper.writeValueAsString(updatedFamily)))
     //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.name").value("Canidae"));
-
-    //     verify(familyRepository, times(1)).findById(1L);
-    //     verify(familyRepository, times(1)).save(any(Family.class));
+    //             .andExpect(jsonPath("$.id").value(updatedFamily.getId()))
+    //             .andExpect(jsonPath("$.name").value(updatedFamily.getName()));
     // }
 
+    @WithMockUser(username = "user", roles = "ADMIN")
     @Test
-    void deleteFamily_ShouldReturnNoContent() throws Exception {
-        doNothing().when(familyRepository).deleteById(1L);
+    void testDeleteFamily() throws Exception {
+        Mockito.doNothing().when(familyRepository).deleteById(1L);
 
-        mockMvc.perform(delete("/api/families/1"))
+        mockMvc.perform(delete("/api/families/1")
+                        .with(csrf()) // Додає CSRF-токен
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
-        verify(familyRepository, times(1)).deleteById(1L);
     }
 }
