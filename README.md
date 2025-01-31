@@ -28,13 +28,15 @@ This project involves the creation of an API for the management and maintenance 
 
 ## Endpoint List
 
-#### Countries  
+#### Countries 
+##### Public API Requests:   
 GET http://localhost:8080/api/countries  
 To get list with all countries  
 
 GET http://localhost:8080/api/countries/{id}  
 To get country by ID  
 
+##### Private API Requests:  
 POST http://localhost:8080/api/countries  
 To add new country  
 
@@ -44,13 +46,15 @@ To update country data
 DELETE http://localhost:8080/api/countries/{id}  
 To delete country  
 
-#### Families  
+#### Families 
+##### Public API Requests:   
 GET http://localhost:8080/api/families  
 To get list with all families  
 
 GET http://localhost:8080/api/families/{id}  
 To get family by ID  
 
+##### Private API Requests:  
 POST http://localhost:8080/api/families  
 To add new family  
 
@@ -61,12 +65,14 @@ DELETE http://localhost:8080/api/families/{id}
 To delete family  
 
 #### Types  
+##### Public API Requests:  
 GET http://localhost:8080/api/types  
 To get list with all types  
 
 GET http://localhost:8080/api/types/{id}  
 To get type by ID  
 
+##### Private API Requests:  
 POST http://localhost:8080/api/types  
 To add new type  
 
@@ -77,7 +83,6 @@ DELETE http://localhost:8080/api/types/{id}
 To delete type  
 
 #### Animals  
-
 ##### Public API Requests:  
 GET http://localhost:8080/api/animals/paged?page=0&size=20  
 To get a list of all animals in the reserve with pagination (maximum 20 animals).  
@@ -88,16 +93,16 @@ To get a list of animals by family with pagination (maximum 10 animals).
 GET http://localhost:8080/api/animals/country/{id}  
 To get a list of animals by country of origin without pagination.  
 
-GET http://localhost:8080/api/animals/family/1/type/3  
+GET http://localhost:8080/api/animals/family/{id}/type/{}  
 To get a list of animals by family and type.  
-
-##### Private API Requests:  
+  
 GET http://localhost:8080/api/animals  
 To get list with all animals  
 
 GET http://localhost:8080/api/animals/{id}  
 To get animal by ID  
 
+##### Private API Requests:  
 POST http://localhost:8080/api/animals  
 To add new animal  
 
@@ -107,6 +112,11 @@ To update animal data
 DELETE http://localhost:8080/api/animals/{id}  
 To delete animal  
 
+http://localhost:8080/api/animals/private/name/{name}
+To find animal by name    
+
+http://localhost:8080/api/animals/private/count  
+To get the total number of animals  
 
 ## Author
 Oksana Muzalevska
